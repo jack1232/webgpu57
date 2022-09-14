@@ -12,6 +12,7 @@ const CreateDomainColor = async (select_func = 0, select_color = 0) => {
 
     const shaders =shader_func.concat(shader);
     const pipeline = device.createRenderPipeline({
+        layout:'auto',
         vertex: {
             module: device.createShaderModule({                    
                 code: shaders

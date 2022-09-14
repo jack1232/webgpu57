@@ -96,22 +96,21 @@ export const InitGPU = async () => {
     const canvas = document.getElementById('canvas-webgpu') as HTMLCanvasElement;
     const adapter = await navigator.gpu?.requestAdapter();
     const device = await adapter?.requestDevice() as GPUDevice;
-    const context = canvas.getContext('webgpu') as unknown as GPUCanvasContext;
-
+    const context = canvas.getContext('webgpu') as GPUCanvasContext;
     const devicePixelRatio = window.devicePixelRatio || 1;
     const size = [
         canvas.clientWidth * devicePixelRatio,
         canvas.clientHeight * devicePixelRatio,
     ];
-    const format = context.getPreferredFormat(adapter as GPUAdapter);
-
+    //const format = context.getPreferredFormat(adapter!);
+    const format = navigator.gpu.getPreferredCanvasFormat();
     context.configure({
         device: device,
         format: format,
-        size: size,
-        compositingAlphaMode: "premultiplied",
+        //size: size
+        alphaMode:'opaque'
     });
-    return{ device, canvas, format, context };
+    return{ device, canvas, format, context, size };
 };
 
 /*export const InitGPU = async () => {
@@ -123,20 +122,20 @@ export const InitGPU = async () => {
     const canvas = document.getElementById('canvas-webgpu') as HTMLCanvasElement;
     const adapter = await navigator.gpu?.requestAdapter();
     const device = await adapter?.requestDevice() as GPUDevice;
-    const context = canvas.getContext('gpupresent') as unknown as GPUCanvasContext;
-    const swapChainFormat = 'bgra8unorm';
-    const swapChain = context.configureSwapChain({
+    const context = canvas.getContext('gpupresent') as GPUPresentationContext;
+    const format = 'bgra8unorm';
+    context.configure({
         device: device,
-        format: swapChainFormat
+        format: format
     });
-    return{device, canvas, swapChainFormat, swapChain };
+    return{ device, canvas, format, context };
 };*/
 
 export const CheckWebGPU = () => {
     let result = 'Great, your current browser supports WebGPU!';
     if (!navigator.gpu) {
         result = `Your current browser does not support WebGPU! Make sure you are on a system 
-                    with WebGPU enabled. Currently, WebGPU is only supported in  
+                    with WebGPU enabled. Currently, SPIR-WebGPU is only supported in  
                     <a href="https://www.google.com/chrome/canary/">Chrome canary</a>
                     with the flag "enable-unsafe-webgpu" enabled. See the 
                     <a href="https://github.com/gpuweb/gpuweb/wiki/Implementation-Status"> 

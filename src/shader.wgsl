@@ -29,7 +29,7 @@ fn c_func(z:vec2<f32>, a:f32, select_id:i32) -> vec2<f32>{
 }
 
 // vertex shader
-@stage(vertex)
+@vertex
 fn vs_main(@builtin(vertex_index) in_vertex_index: u32) -> @builtin(position) vec4<f32> {    
     var pos = array<vec2<f32>,4>(
         vec2<f32>(-1.0, -1.0),
@@ -50,7 +50,7 @@ struct FragUniforms {
 };
 @binding(0) @group(0) var<uniform> f_uniforms: FragUniforms;  
 
-@stage(fragment)
+@fragment
 fn fs_main(@builtin(position) coord_in : vec4<f32>) -> @location(0) vec4<f32> {
     let a = f_uniforms.a;    
     let w:f32 = f_uniforms.width;
